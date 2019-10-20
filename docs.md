@@ -40,6 +40,21 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
+6) Inserire i permessi per accedere alla fotocamera nell'Android Manifest (manifests/AndroidManifest.xml)
+
+```xml
+...
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.front.autofocus" android:required="false"/>
+
+</manifest>
+```
+
 
 
 Ora potrete usare la libreria OpenCV, come mostrato nell'esempio.

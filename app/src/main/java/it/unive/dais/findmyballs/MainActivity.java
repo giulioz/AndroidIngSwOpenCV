@@ -9,14 +9,15 @@ import android.view.WindowManager;
 
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = "AndroidIngSwOpenCV";
-
     private CameraBridgeViewBase mOpenCvCameraView;
 
     @Override
@@ -49,20 +50,22 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "Camera Stopped");
             }
 
-            // Viene eseguito ad ogni frame, con inputFrame l'immagine corrente
             @Override
             public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
                 // Salva il frame corrente su un oggetto Mat, ossia una matrice bitmap
                 Mat frame = inputFrame.rgba();
 
-                // Crea una nuova Mat per effettuare elaborazioni
-                Mat median = new Mat();
+                // Crea una nuova Mat a partire dal frame corrente per effettuare elaborazioni
+                Mat median = frame.t();
 
-                // Converte il formato colore da BGR a RGB
-                Imgproc.cvtColor(frame, median, Imgproc.COLOR_BGR2RGB);
+                // Ruota il frame per farlo funzionare in modalità portrait
+                Core.flip(median, median, 1);
+                Imgproc.resize(median, median, frame.size());
 
-                // Effettua un filtro mediana di dimensione 5 sull'immagine
-                Imgproc.medianBlur(median, median, 5);
+                // Disegna una linea in mezzo allo schermo
+                org.opencv.core.Point p1 = new org.opencv.core.Point(0, 120);
+                org.opencv.core.Point p2 = new org.opencv.core.Point(320, 120);
+                Imgproc.line(median, p1, p2, new Scalar(0, 255, 0), 1);
 
                 // Ritorna il frame da visualizzare a schermo
                 return median;

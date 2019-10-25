@@ -11,13 +11,14 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Size;
+import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = "AndroidIngSwOpenCV";
+
     private CameraBridgeViewBase mOpenCvCameraView;
 
     @Override
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "Camera Stopped");
             }
 
+            // Viene eseguito ad ogni frame, con inputFrame l'immagine corrente
             @Override
             public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
                 // Salva il frame corrente su un oggetto Mat, ossia una matrice bitmap
@@ -63,9 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 Imgproc.resize(median, median, frame.size());
 
                 // Disegna una linea in mezzo allo schermo
-                org.opencv.core.Point p1 = new org.opencv.core.Point(0, 120);
-                org.opencv.core.Point p2 = new org.opencv.core.Point(320, 120);
-                Imgproc.line(median, p1, p2, new Scalar(0, 255, 0), 1);
+                Imgproc.line(median, new Point(0, 120), new Point(320, 120), new Scalar(0, 255, 0), 1);
 
                 // Ritorna il frame da visualizzare a schermo
                 return median;

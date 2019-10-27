@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String TAG = "AndroidIngSwOpenCV";
 
-    private CameraBridgeViewBase mOpenCvCameraView;
+    private PortraitCameraView mOpenCvCameraView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

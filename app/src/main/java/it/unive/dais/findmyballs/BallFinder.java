@@ -1,21 +1,21 @@
 package it.unive.dais.findmyballs;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.core.Size;
-import org.opencv.core.CvType;
+import org.opencv.imgproc.Imgproc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BallFinder {
     private float view_ratio = 0.0f;
-    private int min_area = 250;
+    private int min_area = 0;
 
     private int sat_lower = 96;
     private int sat_upper = 255;
@@ -43,7 +43,37 @@ public class BallFinder {
         }
     }
 
-    public Mat findBalls() {
+    public void setViewRatio(float view_ratio) {
+        this.view_ratio = view_ratio;
+    }
+
+    public void setMinArea(int min_area) {
+        this.min_area = min_area;
+    }
+
+    public void setSaturationThreshold(int lower, int upper) {
+        this.sat_lower = lower;
+        this.sat_upper = upper;
+    }
+
+    public void setRedThreshold(int lower, int upper) {
+        this.red_lower = lower;
+        this.red_upper = upper;
+    }
+
+    public void setBlueThreshold(int lower, int upper) {
+        this.blue_lower = lower;
+        this.blue_upper = upper;
+    }
+
+    public void setYellowThreshold(int lower, int upper) {
+        this.yellow_lower = lower;
+        this.yellow_upper= upper;
+    }
+
+    public ArrayList<Ball> findBalls() {
+        ArrayList<Ball> balls = new ArrayList<>();
+
         Mat hsv = new Mat();
         List <Mat> split_hsv = new ArrayList<>();
 
@@ -92,23 +122,38 @@ public class BallFinder {
             if (center.y > frame.height() * view_ratio && Imgproc.contourArea(c) > min_area) {
                 // TODO: add color mean for area_hue
                 int area_hue = (int) hue.get((int) center.y, (int) center.x)[0];
-                Scalar color;
+                String color;
 
                 if (area_hue >= red_lower && area_hue <= red_upper)
-                    color = new Scalar(255, 0, 0);
+                    color = "red";
                 else if (area_hue >= blue_lower && area_hue <= blue_upper)
-                    color = new Scalar(0, 0, 255);
+                    color = "blue";
                 else if (area_hue >= yellow_lower && area_hue <= yellow_upper)
-                    color = new Scalar(255, 255, 0);
+                    color = "yellow";
                 else
-                    color = new Scalar(0, 0, 0);
+                    color = "unknown";
 
-                if (debug)
-                    Imgproc.circle(frame, center, (int) radius[0], color, 2);
+                balls.add(new Ball(center, radius[0], color));
+
+                if (debug) {
+                    Scalar color_rgb;
+
+                    if (color == "red")
+                        color_rgb = new Scalar(255, 0, 0);
+                    else if (color == "blue")
+                        color_rgb = new Scalar(0, 0, 255);
+                    else if (color == "yellow")
+                        color_rgb = new Scalar(255, 255, 0);
+                    else
+                        color_rgb = new Scalar(0, 0, 0);
+
+                    Imgproc.circle(frame, center, (int) radius[0], color_rgb, 2);
+                }
+
+
             }
         }
 
-        return frame;
-
+        return balls;
     }
 }

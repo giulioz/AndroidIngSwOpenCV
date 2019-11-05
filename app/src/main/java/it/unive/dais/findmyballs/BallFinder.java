@@ -103,7 +103,8 @@ public class BallFinder {
                 else
                     color = new Scalar(0, 0, 0);
 
-                Imgproc.circle(frame, center, (int) radius[0], color, 2);
+                if (debug)
+                    Imgproc.circle(frame, center, (int) radius[0], color, 2);
             }
         }
 

@@ -21,7 +21,7 @@ public class BallFinder {
     private int sat_upper = 255;
     private int red_lower = 160;
     private int red_upper = 180;
-    private int blue_lower = 110;
+    private int blue_lower = 105;
     private int blue_upper = 120;
     private int yellow_lower = 16;
     private int yellow_upper = 25;

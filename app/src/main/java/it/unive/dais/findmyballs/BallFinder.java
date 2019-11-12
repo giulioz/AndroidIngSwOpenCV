@@ -27,6 +27,7 @@ public class BallFinder {
     private int yellow_upper = 25;
 
     private boolean debug = false;
+    private String orientation = "portrait";
 
     private Mat frame;
 
@@ -41,6 +42,13 @@ public class BallFinder {
             this.frame = frame;
             this.debug = true;
         }
+    }
+
+    public void setOrientation(String orientation) {
+        if (orientation == "landscape" || orientation == "portrait")
+            this.orientation = orientation;
+        else
+            throw new IllegalArgumentException("Invalid orientation, only \"portrait\" or \"landscape\" are allowed");
     }
 
     public void setViewRatio(float view_ratio) {
@@ -108,6 +116,16 @@ public class BallFinder {
         Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
         if (debug) {
+            Point p1 = new Point(frame.width() * view_ratio, 0);
+            Point p2 = new Point(frame.width() * view_ratio, frame.height());
+
+            if (orientation == "landscape") {
+                p1 = new Point(0, frame.height() * view_ratio);
+                p2 = new Point(frame.width(), frame.height() * view_ratio);
+            }
+
+            Imgproc.line(frame, p1, p2, new Scalar(0, 255, 255), 2);
+
             for (int i = 0; i < contours.size(); i++)
                 Imgproc.drawContours(frame, contours, i, new Scalar(255, 0, 0), 1);
         }
@@ -116,10 +134,14 @@ public class BallFinder {
         Point center = new Point();
 
         for (MatOfPoint c : contours) {
-
             Imgproc.minEnclosingCircle(new MatOfPoint2f(c.toArray()), center, radius);
 
-            if (center.y > frame.height() * view_ratio && Imgproc.contourArea(c) > min_area) {
+            boolean cond = center.x > frame.width() * view_ratio;
+
+            if (orientation == "landscape")
+                cond = center.y > frame.height() * view_ratio;
+
+            if (cond && Imgproc.contourArea(c) > min_area) {
                 // TODO: add color mean for area_hue
                 int area_hue = (int) hue.get((int) center.y, (int) center.x)[0];
                 String color;

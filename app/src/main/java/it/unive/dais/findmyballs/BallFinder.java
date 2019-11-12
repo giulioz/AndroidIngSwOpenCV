@@ -155,6 +155,12 @@ public class BallFinder {
                 else
                     color = "unknown";
 
+                if (orientation == "portrait") {
+                    double tmp = center.x;
+                    center.x = center.y;
+                    center.y = tmp;
+                }
+
                 balls.add(new Ball(center, radius[0], color));
 
                 if (debug) {

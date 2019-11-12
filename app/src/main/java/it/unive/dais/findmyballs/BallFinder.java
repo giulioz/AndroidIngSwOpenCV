@@ -156,7 +156,7 @@ public class BallFinder {
                     color = "unknown";
 
                 if (orientation == "portrait") {
-                    double tmp = center.x;
+                    double tmp = frame.width() - center.x;
                     center.x = center.y;
                     center.y = tmp;
                 }

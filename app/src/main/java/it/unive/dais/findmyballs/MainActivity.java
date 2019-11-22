@@ -13,14 +13,11 @@ import org.opencv.core.Mat;
 
 import java.util.ArrayList;
 
-import me.dm7.barcodescanner.zbar.ZBarScannerView;
-
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = "AndroidIngSwOpenCV";
 
     private CameraBridgeViewBase mOpenCvCameraView;
-    private ZBarScannerView mScannerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

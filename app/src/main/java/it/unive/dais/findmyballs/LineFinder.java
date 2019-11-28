@@ -65,13 +65,13 @@ public class LineFinder {
     }
 
     public double findLine() {
-        Mat frame_gay = new Mat();
-        Imgproc.cvtColor(frame, frame_gay, Imgproc.COLOR_RGB2GRAY);
-        Imgproc.medianBlur(frame_gay, frame_gay, 3);
+        Mat frame_gray = new Mat();
+        Imgproc.cvtColor(frame, frame_gray, Imgproc.COLOR_RGB2GRAY);
+        Imgproc.medianBlur(frame_gray, frame_gray, 3);
 
         Mat edges = new Mat();
         Mat lines = new Mat();
-        Imgproc.Canny(frame_gay, edges, 20, 50);
+        Imgproc.Canny(frame_gray, edges, 20, 50);
         Imgproc.HoughLines(edges, lines, 1, Math.PI/180, 150);
 
         if (debug) {

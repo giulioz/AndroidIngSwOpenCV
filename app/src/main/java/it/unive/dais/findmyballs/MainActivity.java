@@ -54,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
             public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
                 // Salva il frame corrente su un oggetto Mat, ossia una matrice bitmap
                 Mat frame = inputFrame.rgba();
+
+                LineFinder lineFinder = new LineFinder(frame, true);
+                lineFinder.setThreshold(240, 50);
+                lineFinder.setOrientation("landscape");
+                Log.e("line", String.valueOf(lineFinder.findLine()));
+
                 BallFinder ballFinder = new BallFinder(frame, true);
                 ballFinder.setViewRatio(0.0f);
                 ballFinder.setOrientation("landscape");

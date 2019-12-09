@@ -155,12 +155,6 @@ public class BallFinder {
                 else
                     color = "unknown";
 
-                if (orientation == "portrait") {
-                    double tmp = center.x;
-                    center.x = frame.height() - center.y;
-                    center.y = tmp;
-                }
-
                 balls.add(new Ball(center, radius[0], color));
 
                 if (debug) {
@@ -177,8 +171,6 @@ public class BallFinder {
 
                     Imgproc.circle(frame, center, (int) radius[0], color_rgb, 2);
                 }
-
-
             }
         }
 

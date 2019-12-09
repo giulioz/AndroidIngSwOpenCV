@@ -57,7 +57,7 @@ public class LineFinder {
                 if (debug)
                     Imgproc.line(frame, p1, p2, new Scalar(255, 0, 0), 2);
 
-                return theta;
+                return Math.toDegrees(theta);
             }
         }
 

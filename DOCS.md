@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            // Viene eseguito ad ogni frame, con inputFrame l'immagine corrente
             @Override
             public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
                 Mat frame = inputFrame.rgba();
@@ -125,15 +124,13 @@ public class MainActivity extends AppCompatActivity {
 La classe FindBalls prevede un costruttore, vari setter e una funzione findBalls.
 
 Il costruttore prende come parametri:
-    - `Mat frame`: il frame ottenuto dalla fotocamera in formato rgba
-    - `boolean debug`: parametro opzionale, per mostrare all'interno del frame il funzionamento della classe (attenzione: se è uguale a `true` scrive nel frame).
-    Nella modalità debug, i contorni degli oggetti rilevati sono mostrati da una linea rossa fine, e le mine sono descritte da un cerchio del colore rilevato (nero se non è possibile capire il colore).
+- `Mat frame`: il frame ottenuto dalla fotocamera in formato rgba
+- `boolean debug`: parametro opzionale, per mostrare all'interno del frame il funzionamento della classe (attenzione: se è uguale a `true` scrive nel frame). Nella modalità debug, i contorni degli oggetti rilevati sono mostrati da una linea rossa fine, e le mine sono descritte da un cerchio del colore rilevato (nero se non è possibile capire il colore).
 
 I setter più importanti sono:
-    - `setOrientation(String orientation)`: prende una stringa che può essere **"portrait"** (telefono in verticale), oppure **"landscape"** (telefono in orizzontale). L'orientamento di default è portrait.
-    Se l'orientamento è settato a "portrait" la funzione `findBalls()` effettuerà i calcoli asserendo che il telefono è tenuto in verticale, se invece è "landscape" il coportamento di `findBalls()` rimarrà invariato (questo perché OpenCV è stato ideato solo per funzionare in modalità landscape, e non è possibile girare la visualizzazione della fotocamera). Se volete evitare di usare la modalità portrait e tenere comunque il telefono in verticale è necessario ruotare la matrice contenente il frame prima di passarlo al costruttore.
-    - `setMinArea(int min_area)`: imposta l'area minima di un oggetto affiché venga rilevato come possibile mina. Se è troppo grande non rileverà le palline più distanti, se è troppo piccolo è possibile che rilevi falsi positivi.
-    - `setViewRatio(float view_ratio)`: imposta l'altezza, partendo dall'alto del frame, sopra il quale ignorare gli oggetti rilevati. Se la modalità di debug è attiva, è visibile sotto forma di una linea azzurra all'interno del frame. Prende un numero decimale compreso tra 0 e 1, dove 0 è la parte più alta del frame, 0.5 è metà e 1 è la parte più bassa del frame.
+- `setOrientation(String orientation)`: prende una stringa che può essere **"portrait"** (telefono in verticale), oppure **"landscape"** (telefono in orizzontale). L'orientamento di default è portrait. Se l'orientamento è settato a "portrait" la funzione `findBalls()` effettuerà i calcoli asserendo che il telefono è tenuto in verticale, se invece è "landscape" il coportamento di `findBalls()` rimarrà invariato (questo perché OpenCV è stato ideato solo per funzionare in modalità landscape, e non è possibile girare la visualizzazione della fotocamera). Se volete evitare di usare la modalità portrait e tenere comunque il telefono in verticale è necessario ruotare la matrice contenente il frame prima di passarlo al costruttore.
+- `setMinArea(int min_area)`: imposta l'area minima di un oggetto affiché venga rilevato come possibile mina. Se è troppo grande non rileverà le palline più distanti, se è troppo piccolo è possibile che rilevi falsi positivi.
+- `setViewRatio(float view_ratio)`: imposta l'altezza, partendo dall'alto del frame, sopra il quale ignorare gli oggetti rilevati. Se la modalità di debug è attiva, è visibile sotto forma di una linea azzurra all'interno del frame. Prende un numero decimale compreso tra 0 e 1, dove 0 è la parte più alta del frame, 0.5 è metà e 1 è la parte più bassa del frame.
 
 All'interno della classe `BallFinder` sono presenti altri setter che permettono di regolare le soglie dei colori (nel formato HSV) e della saturazione (da 0 a 255) per la rilevazione degli oggetti. I parametri di default sono caibrati per funzionare nel campo da gioco dichiarato dalle specifiche (edificio Zeta, secondo piano, rombo con le mattonelle rosa) in condizione di luce ottimale.
 

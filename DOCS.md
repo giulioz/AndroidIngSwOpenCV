@@ -125,14 +125,18 @@ La classe FindBalls prevede un costruttore, vari setter e una funzione findBalls
 
 Il costruttore prende come parametri:
 - `Mat frame`: il frame ottenuto dalla fotocamera in formato rgba
-- `boolean debug`: parametro opzionale, per mostrare all'interno del frame il funzionamento della classe (attenzione: se è uguale a `true` scrive nel frame). Nella modalità debug, i contorni degli oggetti rilevati sono mostrati da una linea rossa fine, e le mine sono descritte da un cerchio del colore rilevato (nero se non è possibile capire il colore).
+- `boolean debug`: parametro opzionale, per mostrare all'interno del frame il funzionamento della classe (attenzione: se è uguale a `true` scrive nel frame).
+Nella modalità debug, i contorni degli oggetti rilevati sono mostrati da una linea rossa fine, e le mine sono descritte da un cerchio del colore rilevato (nero se non è possibile capire il colore).
 
 I setter più importanti sono:
-- `setOrientation(String orientation)`: prende una stringa che può essere **"portrait"** (telefono in verticale), oppure **"landscape"** (telefono in orizzontale). L'orientamento di default è portrait. Se l'orientamento è settato a "portrait" la funzione `findBalls()` effettuerà i calcoli asserendo che il telefono è tenuto in verticale, se invece è "landscape" il coportamento di `findBalls()` rimarrà invariato (questo perché OpenCV è stato ideato solo per funzionare in modalità landscape, e non è possibile girare la visualizzazione della fotocamera). Se volete evitare di usare la modalità portrait e tenere comunque il telefono in verticale è necessario ruotare la matrice contenente il frame prima di passarlo al costruttore.
+- `setOrientation(String orientation)`: prende una stringa che può essere **"portrait"** (telefono in verticale), oppure **"landscape"** (telefono in orizzontale). L'orientamento di default è portrait.
+Se l'orientamento è settato a "portrait" la funzione `findBalls()` effettuerà i calcoli asserendo che il telefono è tenuto in verticale, se invece è "landscape" il coportamento di `findBalls()` rimarrà invariato (questo perché OpenCV è stato ideato solo per funzionare in modalità landscape, e non è possibile girare la visualizzazione della fotocamera).
+Se volete evitare di usare la modalità portrait e tenere comunque il telefono in verticale è necessario ruotare la matrice contenente il frame prima di passarlo al costruttore.
 - `setMinArea(int min_area)`: imposta l'area minima di un oggetto affiché venga rilevato come possibile mina. Se è troppo grande non rileverà le palline più distanti, se è troppo piccolo è possibile che rilevi falsi positivi.
 - `setViewRatio(float view_ratio)`: imposta l'altezza, partendo dall'alto del frame, sopra il quale ignorare gli oggetti rilevati. Se la modalità di debug è attiva, è visibile sotto forma di una linea azzurra all'interno del frame. Prende un numero decimale compreso tra 0 e 1, dove 0 è la parte più alta del frame, 0.5 è metà e 1 è la parte più bassa del frame.
 
-All'interno della classe `BallFinder` sono presenti altri setter che permettono di regolare le soglie dei colori (nel formato HSV) e della saturazione (da 0 a 255) per la rilevazione degli oggetti. I parametri di default sono caibrati per funzionare nel campo da gioco dichiarato dalle specifiche (edificio Zeta, secondo piano, rombo con le mattonelle rosa) in condizione di luce ottimale.
+All'interno della classe `BallFinder` sono presenti altri setter che permettono di regolare le soglie dei colori (nel formato HSV) e della saturazione (da 0 a 255) per la rilevazione degli oggetti.
+I parametri di default sono calibrati per funzionare nel campo da gioco dichiarato dalle specifiche (edificio Zeta, secondo piano, rombo con le mattonelle rosa) in condizione di luce ottimale, **e non altrove**.
 
 La funzione principale della classe è `findBalls()`, e restituisce un ArrayList di oggetti `Ball`. Un oggetto `Ball` è composto nel seguente modo:
 
@@ -140,6 +144,8 @@ La funzione principale della classe è `findBalls()`, e restituisce un ArrayList
 - `double center.y`: coordinate in pixel all'interno del frame della coordinata y del centro della mina trovata
 - `float radius`: raggio della mina trovata
 - `String color`: colore della mina trovata, può essere "red", "blue", "yellow" o "unknown"
+
+Se la funzione `findBalls()` viene utilizzata al di fuori del campo da gioco verranno rilevati falsi positivi, quindi per verificarne il corretto funzionamento è necessario utilizzarla nel campo da gioco.
 
 Esempio di utilizzo di findBalls:
 

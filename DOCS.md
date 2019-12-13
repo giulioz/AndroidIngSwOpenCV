@@ -198,7 +198,7 @@ Esempio di utilizzo di findLine:
             public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
                 Mat frame = inputFrame.rgba();
 
-                LineFinder lineFinder = new lineFinder(frame, true);
+                LineFinder lineFinder = new LineFinder(frame, true);
                 lineFinder.setThreshold(300, 20);;
                 lineFinder.setOrientation("landscape");
                 double inclination = lineFinder.findLine()
